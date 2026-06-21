@@ -1,0 +1,35 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!319 &31900000
+AvatarMask:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: PlayerMask
+  m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+  m_Elements:
+  - m_Path: 
+    m_Weight: 1
+  - m_Path: Player
+    m_Weight: 0
+  - m_Path: Player Rig
+    m_Weight: 0
+  - m_Path: Player Rig/Root
+    m_Weight: 0
+  - m_Path: Player Rig/Root/Body
+    m_Weight: 0
+  - m_Path: Player Rig/Root/Body/Head
+    m_Weight: 0
+  - m_Path: Player Rig/Root/Body/LeftArm
+    m_Weight: 1
+  - m_Path: Player Rig/Root/Body/RightArm
+    m_Weight: 1
+  - m_Path: Player Rig/Root/LeftLeg
+    m_Weight: 0
+  - m_Path: Player Rig/Root/LeftLeg/LeftFoot
+    m_Weight: 0
+  - m_Path: Player Rig/Root/RightLeg
+    m_Weight: 0
+  - m_Path: Player Rig/Root/RightLeg/RightFoot
+    m_Weight: 0
