@@ -50,9 +50,17 @@ public class DogController : MonoBehaviour
     [Header("Sounds")]
     [SerializeField] private AudioSource audioSource;
 
+
+
+
     private float lastBarkSoundTime;
 
     [SerializeField] private AudioClip barkSound;
+
+
+    [Header("Target Offsets")]
+    [SerializeField] private float foodBowlStopDistance = 1.1f;
+    [SerializeField] private float bedStopDistance = 0.8f;
 
     private void Awake()
     {
@@ -116,7 +124,7 @@ public class DogController : MonoBehaviour
 
                 if (distanceToOwner > followDistance)
                 {
-                    MoveNear(owner.position, ownerStopDistance);
+                    MoveNearTarget(owner, ownerStopDistance);
                     continue;
                 }
             }
@@ -140,11 +148,12 @@ public class DogController : MonoBehaviour
 
     private IEnumerator GoEat()
     {
-        MoveTo(foodBowl.position);
+        MoveNearTarget(foodBowl, foodBowlStopDistance);
         yield return WaitUntilArrived();
 
         busy = true;
         StopMoving();
+        FaceTarget(foodBowl.position);
 
         animator.SetTrigger(EatHash);
 
@@ -162,6 +171,7 @@ public class DogController : MonoBehaviour
 
         busy = true;
         StopMoving();
+        FaceTarget(bed.position);
 
         animator.SetBool(SleepingHash, true);
 
@@ -172,6 +182,35 @@ public class DogController : MonoBehaviour
         tiredness = 0f;
         ResumeMoving();
         busy = false;
+    }
+
+    private void MoveNearTarget(Transform target, float stopDistance)
+    {
+        if (target == null || !agent.isOnNavMesh)
+            return;
+
+        Vector3 directionFromTarget = (transform.position - target.position).normalized;
+
+        if (directionFromTarget.sqrMagnitude < 0.01f)
+            directionFromTarget = -target.forward;
+
+        Vector3 stopPosition = target.position + directionFromTarget * stopDistance;
+
+        if (NavMesh.SamplePosition(stopPosition, out NavMeshHit hit, 1.5f, NavMesh.AllAreas))
+        {
+            MoveTo(hit.position);
+        }
+    }
+
+    private void FaceTarget(Vector3 targetPosition)
+    {
+        Vector3 direction = targetPosition - transform.position;
+        direction.y = 0f;
+
+        if (direction.sqrMagnitude < 0.01f)
+            return;
+
+        transform.rotation = Quaternion.LookRotation(direction);
     }
 
     private IEnumerator Bark()
