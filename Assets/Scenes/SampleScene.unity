@@ -429,11 +429,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
-  moveSpeed: 4
-  turnSpeed: 12
+  moveSpeed: 3
+  turnSpeed: 8
   cameraTransform: {fileID: 963194228}
   currentNode: {fileID: 0}
   nodeMoveTime: 0.35
+  animator: {fileID: 0}
 --- !u!143 &1674086512
 CharacterController:
   m_ObjectHideFlags: 0
@@ -609,6 +610,7 @@ MonoBehaviour:
   cameraTransform: {fileID: 963194228}
   currentNode: {fileID: 0}
   nodeMoveTime: 0.35
+  animator: {fileID: 0}
 --- !u!143 &2112987033
 CharacterController:
   m_ObjectHideFlags: 0

@@ -140,8 +140,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentMode: 0
-  moveSpeed: 4
-  turnSpeed: 12
+  moveSpeed: 3
+  turnSpeed: 8
   cameraTransform: {fileID: 1741755749}
   currentNode: {fileID: 0}
   nodeMoveTime: 0.35
