@@ -17,12 +17,21 @@ public class PlayerController : EventListener
     [SerializeField] private MazeNode currentNode;
     [SerializeField] private float nodeMoveTime = 0.35f;
 
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+
     private CharacterController controller;
     private bool isMovingNode;
+
+    private static readonly int RunHash = Animator.StringToHash("Run");
 
     private void Awake()
     {
         controller = GetComponent<CharacterController>();
+
+        if (animator == null)
+            animator = GetComponentInChildren<Animator>();
+
         Listen<ChangePlayerModeEvent>(OnChangePlayerMode);
     }
 
@@ -30,6 +39,8 @@ public class PlayerController : EventListener
     {
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
+
+        SetRunAnimation(false);
     }
 
     private void Update()
@@ -42,12 +53,21 @@ public class PlayerController : EventListener
 
     private void UpdateGardenMovement()
     {
+        if (controller == null || !controller.enabled || !gameObject.activeInHierarchy)
+            return;
+
         float x = Input.GetAxisRaw("Horizontal");
         float z = Input.GetAxisRaw("Vertical");
 
         Vector3 input = new Vector3(x, 0f, z).normalized;
+        bool isRunning = input.sqrMagnitude > 0.01f;
 
-        if (input.sqrMagnitude <= 0.01f)
+        SetRunAnimation(isRunning);
+
+        if (!isRunning)
+            return;
+
+        if (cameraTransform == null)
             return;
 
         Vector3 camForward = cameraTransform.forward;
@@ -63,17 +83,23 @@ public class PlayerController : EventListener
 
         controller.Move(moveDirection * moveSpeed * Time.deltaTime);
 
-        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
+        if (moveDirection.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
 
-        transform.rotation = Quaternion.Slerp(
-            transform.rotation,
-            targetRotation,
-            Time.deltaTime * turnSpeed
-        );
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                Time.deltaTime * turnSpeed
+            );
+        }
     }
 
     private void UpdateMazeMovement()
     {
+        if (!isMovingNode)
+            SetRunAnimation(false);
+
         if (isMovingNode || currentNode == null)
             return;
 
@@ -90,6 +116,7 @@ public class PlayerController : EventListener
     private IEnumerator MoveToNode(MazeNode targetNode)
     {
         isMovingNode = true;
+        SetRunAnimation(true);
 
         Vector3 start = transform.position;
         Vector3 end = targetNode.transform.position;
@@ -99,43 +126,62 @@ public class PlayerController : EventListener
 
         float timer = 0f;
 
+        if (controller != null)
+            controller.enabled = false;
+
         while (timer < nodeMoveTime)
         {
             timer += Time.deltaTime;
-            float t = timer / nodeMoveTime;
+            float t = Mathf.Clamp01(timer / nodeMoveTime);
 
-            controller.enabled = false;
             transform.position = Vector3.Lerp(start, end, t);
             transform.rotation = Quaternion.Slerp(startRot, endRot, t);
-            controller.enabled = true;
 
             yield return null;
         }
 
+        transform.position = end;
+        transform.rotation = endRot;
+
         currentNode = targetNode;
-        transform.position = currentNode.transform.position;
-        transform.rotation = currentNode.transform.rotation;
+
+        if (controller != null)
+            controller.enabled = true;
 
         if (currentNode.cameraPoint != null)
             Events.Publish(new SetMazeCameraNodeEvent(currentNode.cameraPoint));
 
+        SetRunAnimation(false);
         isMovingNode = false;
     }
 
     private void OnChangePlayerMode(ChangePlayerModeEvent e)
     {
         currentMode = e.Mode;
+        SetRunAnimation(false);
 
         if (currentMode == PlayerMode.Maze && currentNode != null)
         {
-            controller.enabled = false;
+            if (controller != null)
+                controller.enabled = false;
+
             transform.position = currentNode.transform.position;
             transform.rotation = currentNode.transform.rotation;
-            controller.enabled = true;
+
+            if (controller != null)
+                controller.enabled = true;
 
             if (currentNode.cameraPoint != null)
                 Events.Publish(new SetMazeCameraNodeEvent(currentNode.cameraPoint));
         }
+    }
+
+    private void SetRunAnimation(bool running)
+    {
+        if (animator == null)
+            return;
+
+        animator.SetBool(RunHash, running);
     }
 
     public void SetMazeNode(MazeNode node)
