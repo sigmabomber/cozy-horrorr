@@ -45,6 +45,15 @@ public class DogController : MonoBehaviour
     private static readonly int EatHash = Animator.StringToHash("Eat");
     private static readonly int SleepingHash = Animator.StringToHash("Sleeping");
 
+
+
+    [Header("Sounds")]
+    [SerializeField] private AudioSource audioSource;
+
+    private float lastBarkSoundTime;
+
+    [SerializeField] private AudioClip barkSound;
+
     private void Awake()
     {
         animator = GetComponent<Animator>();
@@ -66,6 +75,12 @@ public class DogController : MonoBehaviour
 
         float speed = agent.isOnNavMesh ? agent.velocity.magnitude : 0f;
         animator.SetFloat(SpeedHash, speed);
+
+        if (Input.GetKeyDown(KeyCode.K) && !busy)
+        {
+            print("ee");
+            StartCoroutine(Bark());
+        }
     }
 
     private IEnumerator BehaviorLoop()
@@ -170,6 +185,16 @@ public class DogController : MonoBehaviour
 
         ResumeMoving();
         busy = false;
+    }
+
+    public void PlayBarkSound()
+    {
+        Debug.Log($"BARK EVENT {Time.frameCount}");
+
+        if (audioSource == null || barkSound == null)
+            return;
+
+        audioSource.PlayOneShot(barkSound);
     }
 
     private IEnumerator Sniff()

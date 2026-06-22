@@ -6,17 +6,17 @@ AvatarMask:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Diggy
+  m_Name: BarkMask
   m_Mask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
   m_Elements:
   - m_Path: 
     m_Weight: 1
   - m_Path: Dog
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/Body
     m_Weight: 1
   - m_Path: Dog Rig/Root/Body/Head
@@ -28,24 +28,24 @@ AvatarMask:
   - m_Path: Dog Rig/Root/Body/Tail
     m_Weight: 1
   - m_Path: Dog Rig/Root/Body/Tail/Tail.001
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/Body/Tail/Tail.001/Tail.002
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/Body/Tail/Tail.001/Tail.002/Tail.003
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/LeftBackLeg
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/LeftBackLeg/LeftBackPaw
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/LeftFrontLeg
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/LeftFrontLeg/LeftFrontPaw
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/RightBackLeg
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/RightBackLeg/RightBackPaw
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/RightFrontLeg
-    m_Weight: 1
+    m_Weight: 0
   - m_Path: Dog Rig/Root/RightFrontLeg/RightFrontPaw
-    m_Weight: 1
+    m_Weight: 0
