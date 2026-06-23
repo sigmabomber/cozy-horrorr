@@ -228,7 +228,6 @@ public class DogController : MonoBehaviour
 
     public void PlayBarkSound()
     {
-        Debug.Log($"BARK EVENT {Time.frameCount}");
 
         if (audioSource == null || barkSound == null)
             return;
