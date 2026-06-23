@@ -46,10 +46,8 @@ Shader "Custom/PS1DoubleSidedCutout"
 
                 float4 clip = UnityObjectToClipPos(v.vertex);
 
-                // PS1 vertex snap: round position to a low-res grid in NDC
-                clip.xyz /= clip.w;                                  // perspective divide
-                clip.xy = floor(clip.xy * _SnapResolution) / _SnapResolution;
-                clip.xyz *= clip.w;                                  // undo divide
+                // PS1 vertex snap: quantize only XY, leave Z/W untouched (no precision loss)
+                clip.xy = floor((clip.xy / clip.w) * _SnapResolution) / _SnapResolution * clip.w;
 
                 o.vertex = clip;
                 o.uv = TRANSFORM_TEX(v.uv, _MainTex);

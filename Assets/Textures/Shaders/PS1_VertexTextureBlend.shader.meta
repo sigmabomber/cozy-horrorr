@@ -1,0 +1,9 @@
+fileFormatVersion: 2
+guid: bcbbee0a72b5c534e94bbc2daa7bcfa5
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: '{"shaderPath":"PS1/VertexTextureBlend","attributes":[{"isBaseTexture":true,"channel":4,"index":0,"range":{"x":0.0,"y":1.0},"propertyTarget":"_BaseTex","mask":0},{"isBaseTexture":false,"channel":4,"index":0,"range":{"x":0.0,"y":1.0},"propertyTarget":"_RTex","mask":0}]}'
+  assetBundleName: 
+  assetBundleVariant: 
