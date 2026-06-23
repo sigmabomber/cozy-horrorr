@@ -76,5 +76,40 @@ Shader "PS1/VertexTextureBlend"
             }
             ENDCG
         }
+
+        // ---- Depth / shadow pass. Fills _CameraDepthTexture so water foam
+        //      can detect where it meets the terrain. Opaque, so no alpha clip. ----
+        Pass
+        {
+            Tags { "LightMode" = "ShadowCaster" }
+            ZWrite On ZTest LEqual
+
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+            #pragma multi_compile_shadowcaster
+            #include "UnityCG.cginc"
+
+            float _SnapResolution;
+
+            struct v2f { V2F_SHADOW_CASTER; };
+
+            v2f vert (appdata_base v)
+            {
+                v2f o;
+                TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
+
+                // match the visible silhouette's snap so the foam edge tracks the terrain
+                o.pos.xy = floor((o.pos.xy / o.pos.w) * _SnapResolution) / _SnapResolution * o.pos.w;
+
+                return o;
+            }
+
+            fixed4 frag (v2f i) : SV_Target
+            {
+                SHADOW_CASTER_FRAGMENT(i)
+            }
+            ENDCG
+        }
     }
 }
