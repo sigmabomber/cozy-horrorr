@@ -83,5 +83,17 @@ public interface ITimeBasedMinigame
 {
     float Duration { get; }
     float CurrentTime { get; }
-    float Progress { get; }
+    float TimeProgress { get; }
+
+    float BarValue { get; }
+    float SuccessZoneCenter { get; }
+    float SuccessZoneSize { get; }
+}
+
+public interface ITrackingMinigame
+{
+    float FishPosition { get; }
+    float CatchBarPosition { get; }
+    float CatchBarSize { get; }
+    float CatchProgress { get; }
 }
